@@ -1,0 +1,664 @@
+﻿@using System.Collections.Specialized
+@using System.Web.UI.WebControls
+@using EADprojectBitf12m029.Models
+@model List<Post>
+
+@{
+    Layout = null;
+    ViewBag.Title = "SitePage";
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+    
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>SocialCorner</title>
+        <!-- Bootstrap Core CSS - Uses Bootswatch Flatly Theme: http://bootswatch.com/flatly/ -->
+        <link href="/Bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Custom CSS -->
+        <link href="/Bootstrap/css/freelancer.css" rel="stylesheet">
+        <!-- Custom Fonts -->
+        <link href="/Bootstrap/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="/Bootstrap/css/fonts.css" rel="stylesheet" type="text/css">
+        <link href="/Bootstrap/css/fonts2.css" rel="stylesheet" type="text/css">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+        <style>
+         .title_box{
+                    width:196px;
+                    height:30px;
+                    margin:5px 0 0 0;
+                   
+                  
+                    text-align:center;
+                    font-size:13px;
+                    font-weight:bold;
+                    color:#fff;
+                    line-height:30px;
+                    }
+
+                    .border_box{
+                    width:50%;
+                    height:auto;
+                    text-align:center;
+                    border:1px #6da6b1 solid;
+                    }
+
+                    .product_title{
+                    color:#ea2222;
+                    padding:5px 0 5px 0;
+                    font-weight:bold;
+                    }
+
+                    .product_img{
+                    padding:5px 0 5px 0;
+                    }
+
+                    .prod_price{
+                    padding:5px 0 5px 0;
+                    }
+                            </style>
+        
+    </head>
+
+    <body id="page-top" class="index" style=" background-image:url('/Bootstrap/Images/bg1.jpg')">
+        
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-fixed-top" style="opacity: 0.6; background-color: black; color: black">
+            <div class="container">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header page-scroll">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#page-top" style="color: white">SocialCorner</a>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" style="color:black">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="hidden">
+                            <a href="#page-top"></a>
+                        </li>
+                        <li class="page-scroll">
+                            <a href="#portfolio" style="color: white">@{LogIn l_in= new LogIn();l_in = (LogIn) Session["user"]; @l_in.UserName}</a>
+                        </li>
+                        <li class="page-scroll" >
+                            <a href="~/Home/UserHome" style="color: white">Home</a>
+                        </li>
+                        <li>
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="color: white; margin-top: 5%">
+                                    Settings
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#Changepic" style="width: 100%">Change Pic</button></li>
+                                    <li><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#ChangeCover" style="width: 100%">Change Cover</button></li>
+                                    <li><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style="width: 100%">Make Post</button></li>
+                                    <li><a class="btn btn-info btn-lg" href="~/Home/Friends" style="width: 100%; color: white">Friends</a></li>
+                                    <li><a class="btn btn-info btn-lg" href="~/Home/Others" style="width: 100%; color: white">Others</a></li>
+                                    <li><a class="btn btn-info btn-lg" href="~/Home/Requests" style="width:100%; color: white">Request</a></li>
+                                    <li><a class="btn btn-info btn-lg" href="~/Home/ShowMsgs" style="width:100%; color: white">Messages</a></li>
+
+                                      <li><a class="btn btn-info btn-lg" href="~/Home/Logout" style="width: 100%; color: white">Log Out</a></li>
+                                  
+
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.navbar-collapse -->
+            </div>
+            <!-- /.container-fluid -->
+        </nav>
+        <!-- Header -->
+        <header style="background-image: url('/Bootstrap/Images/bg1.jpg')">
+            
+            <div class="container" style="margin-top:-5%">
+                <div class="row">
+
+                    <div class="col-md-12 ">
+
+                        <p style=" border: 20px;width: 80% ; height:40%; margin-left: 10% ; " align="center">
+                        @if (Session["user"] != null)
+                        {
+                            <p @{ LogIn l = (LogIn)Session["user"]; SocialCornerEntities3 db = new SocialCornerEntities3(); User user = db.Users.First(s => s.UserName.Equals(l.UserName)); }>
+                                @if (user.cover == null)
+                                {
+                                    <img class="img-responsive" src="/Bootstrap/Images/img2.jpg" alt=" " style="border: 20px; border: 1px;width: 500%; height: 450px" />
+                                }
+                                @if (user.cover != null)
+                                {
+                                    <img class="img-responsive" src=@user.cover alt=" " style="border: 20px;width: 500%; height: 450px" />
+                                }
+
+                            </p>
+                        }
+                        @if (Session["user"] == null)
+                        {
+                            <p style="width: 80% ; height:40%; margin-left: 10% ; " align="center">
+                                <img class="img-responsive" src="/Bootstrap/Images/img2.jpg" alt=" " style=" border:1;width: 100px; height: 100px" />
+                            </p>
+                        
+                        }
+                    </div>
+
+                    
+
+                </div>
+
+                
+                <div style=" border: 2px ;width: 50%; height: 40%; margin-top: -35%; margin-left: 2%">
+                        
+                
+                        @if (Session["user"] == null)
+                            {
+                                <p style="width: 80% ; height:40%; margin-left: 10% ; " align="center">
+                                    <img class="img-rounded" src="/Bootstrap/Images/img2.jpg" alt=" " style=" border: 2px; width: 100px; height: 100px" />
+                                </p>
+                            }
+                            @if (Session["user"] != null)
+                            {
+                                <p @{ LogIn l = (LogIn)Session["user"]; SocialCornerEntities3 db = new SocialCornerEntities3(); User user = db.Users.First(s => s.UserName.Equals(l.UserName)); }>
+                                    <div class="col-md-6" style=" margin-top: -50%; margin-left: 5%">
+                                        @if (user.img == null)
+                                        {
+                                           
+                                             <img class="img-rounded" src="/Bootstrap/Images/img3.jpg" alt=" " style="width: 100%; height: 200px" />
+                                        
+                                        }
+                                        @if (user.img != null)
+                                        {
+                                            <img class="img-rounded" src=@user.img alt=" " style="width: 100%; height: 200px" />
+                                        }
+                                    </div>
+                                    <div class="col-md-1" style=" margin-top: -18%; margin-left: 5%; color:black; font-family: Castellar"><h2>@l.UserName</h2></div>
+</p>
+                            }
+                        </div>
+                    </div>
+                
+
+        
+        </header>
+      
+        <!-- Portfolio Grid Section -->
+        <section id="portfolio">
+            <div class="container" style="margin-left: 20%; margin-top: -5%">
+                @foreach (var p in Model)
+                {
+                    <div class="title_box" style="margin-top: 4%; background-color: blue; font-size: x-large">@{ LogIn u = (LogIn)Session["user"]; }@u.UserName</div>
+                    <div class="border_box" style="background-color: black">
+                        <div class="product_title">
+                            <p style="width: 500px; background-color: white">@p.Text</p>
+                        </div>
+                        @if (p.Type.Equals("image"))
+                        {
+                            <div class="product_img">
+                                <img class="img-responsive" src=@p.Path alt="Image" border="0" style="margin-left: 5.5%; width: 500px; height: 350px" />
+                            </div>
+                        }
+                        @if (p.Type.Equals("video"))
+                        {
+
+                            <div class="product_img">
+                                <video controls>
+                                    <source src="@p.Path" type="video/mp4">
+                                    <source src="@p.Path" type="video/ogg">
+
+                                </video>
+                            </div>
+                        }
+                        @if (p.Type.Equals("audio"))
+                        {
+                            <div class="product_img">
+                                <video controls>
+                                    <source src="@p.Path" type="video/mp4">
+                                    <source src="@p.Path" type="video/ogg">
+
+                                </video>
+                            </div>
+                        }
+                        <form action="~/Home/UploadImg?id=@p.PostId" method="POST">
+
+                            <div class="prod_price" style="margin-left: -50%"><input id="submitid" class="btn btn-info btn-navbar" type="submit" value="Comment" /></div>
+                        </form>
+
+                        <form action="~/Home/LikePost?id=@p.PostId" method="POST">
+
+                            <div class="prod_price" style="margin-left: 10%; margin-top: -9.5%"><input class="btn btn-info btn-navbar" type="submit" value="Like" /></div>
+                        </form>
+                        <form action="~/Home/DelPost?id=@p.PostId" method="POST">
+
+                            <div class="prod_price" style="margin-left: 57%; margin-top: -9.5%"><input class="btn btn-info btn-navbar" type="submit" value="Delete Post" /></div>
+                        </form>
+                    </div>
+
+
+                    <div class="row">
+                        
+                        <div class="col-md-6" style=" margin-top: 1% ; margin-left: 0.5% ;   ">
+
+                            @foreach (var c in ViewBag.Comment)
+                            {
+                                if (c.PostId == p.PostId)
+                                {
+                                    <div class="product_img" style="color: white; background-color: black">
+
+                                        @if (c.UserName != null)
+                                        {
+                                            <p style=" margin-left: 2.5%; width: 50px; color: blanchedalmond">@c.UserName</p>
+                                        }
+                                        <p style="margin-left: 25%; width: 500px; color: white; margin-top: -6%">@c.Text</p>
+                                        <hr style="font-weight: bolder" />
+
+
+                                    </div>
+                                }
+                            }
+
+                            <div id="myDiv" class="product_img" style="color: white; background-color: black">
+                                @using (Html.BeginForm("AddComment", "Home", FormMethod.Post))
+                                {
+
+                                    LogIn login=new LogIn();
+                                    login = (LogIn) Session["user"];
+                                    <p style=" margin-left: 2.5%; width: 50px; color: blanchedalmond">@login.UserName</p>
+                                    <textarea name="cat" style="margin-left: 25%; width: 350px; color: black; margin-top: -15%"></textarea>
+
+                                    <input value=@p.PostId name="id" type="hidden" />
+                                    <input type="submit" value="Ok" class="btn btn-info btn-navbar" style="margin-left: 90%; margin-top: -15%" />
+                                    Html.EndForm();
+                                }
+
+                                <hr style="font-weight: bolder" />
+                            </div>
+                        </div>
+
+                    </div>
+                }
+            </div>
+
+                           
+        </section>
+        <!-- About BitVector32.Section -->
+        
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Make a post</h4>
+                    </div>
+                    <div class="modal-body">
+                        @using (@Html.BeginForm("AddPost", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <textarea name="Text" style="width: 70%; height: 20%;"></textarea> <br />
+                            <select name="Type">
+                                <option value="video">Video</option>
+                                <option value="audio">Audio</option>
+                                <option value="image">Image</option>
+                            </select>
+                            <input type="file" name="file" />
+                            <input type="submit" value="Post" /> <br /> <br />
+                            Html.EndForm();
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Change pic-->
+        <div class="modal fade" id="Changepic" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Update Profile Picture</h4>
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm("ChangePic", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            
+                            <input type="file" name="file" />
+                            <input type="submit" value="Save" /> <br /> <br />
+                            Html.EndForm();
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--Change cover-->
+        <div class="modal fade" id="ChangeCover" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Change Cover</h4>
+                    </div>
+                    <div class="modal-body">
+                        @using (Html.BeginForm("ChangeCover", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            
+                            <input type="file" name="file" />
+                            <input type="submit" value="Save" /> <br /> <br />
+                            Html.EndForm();
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+        <div class="scroll-top page-scroll visible-xs visible-sm">
+            <a class="btn btn-primary" href="#page-top">
+                <i class="fa fa-chevron-up"></i>
+            </a>
+        </div>
+        <!-- Portfolio Modals -->
+        <div class="portfolio-modal modal fade" id="portfolioModal1" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <h2>Project Title</h2>
+                                <hr class="star-primary">
+                                <img src="/Bootstrap/img/portfolio/cabin.png" class="img-responsive img-centered" alt="">
+                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                                <ul class="list-inline item-details">
+                                    <li>
+                                        Client:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">Start Bootstrap</a>
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        Date:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">April 2014</a>
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        Service:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">Web Development</a>
+                                        </strong>
+                                    </li>
+                                </ul>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portfolio-modal modal fade" id="portfolioModal2" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <h2>Project Title</h2>
+                                <hr class="star-primary">
+                                <img src="/Bootstrap/img/portfolio/cake.png" class="img-responsive img-centered" alt="">
+                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                                <ul class="list-inline item-details">
+                                    <li>
+                                        Client:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">Start Bootstrap</a>
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        Date:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">April 2014</a>
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        Service:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">Web Development</a>
+                                        </strong>
+                                    </li>
+                                </ul>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portfolio-modal modal fade" id="portfolioModal3" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <h2>Project Title</h2>
+                                <hr class="star-primary">
+                                <img src="/Bootstrap/img/portfolio/circus.png" class="img-responsive img-centered" alt="">
+                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                                <ul class="list-inline item-details">
+                                    <li>
+                                        Client:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">Start Bootstrap</a>
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        Date:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">April 2014</a>
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        Service:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">Web Development</a>
+                                        </strong>
+                                    </li>
+                                </ul>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portfolio-modal modal fade" id="portfolioModal4" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <h2>Project Title</h2>
+                                <hr class="star-primary">
+                                <img src="/Bootstrap/img/portfolio/game.png" class="img-responsive img-centered" alt="">
+                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                                <ul class="list-inline item-details">
+                                    <li>
+                                        Client:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">Start Bootstrap</a>
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        Date:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">April 2014</a>
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        Service:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">Web Development</a>
+                                        </strong>
+                                    </li>
+                                </ul>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portfolio-modal modal fade" id="portfolioModal5" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <h2>Project Title</h2>
+                                <hr class="star-primary">
+                                <img src="img/portfolio/safe.png" class="img-responsive img-centered" alt="">
+                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                                <ul class="list-inline item-details">
+                                    <li>
+                                        Client:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">Start Bootstrap</a>
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        Date:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">April 2014</a>
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        Service:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">Web Development</a>
+                                        </strong>
+                                    </li>
+                                </ul>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="portfolio-modal modal fade" id="portfolioModal6" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-content">
+                <div class="close-modal" data-dismiss="modal">
+                    <div class="lr">
+                        <div class="rl">
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 col-lg-offset-2">
+                            <div class="modal-body">
+                                <h2>Project Title</h2>
+                                <hr class="star-primary">
+                                <img src="img/portfolio/submarine.png" class="img-responsive img-centered" alt="">
+                                <p>Use this area of the page to describe your project. The icon above is part of a free icon set by <a href="https://sellfy.com/p/8Q9P/jV3VZ/">Flat Icons</a>. On their website, you can download their free set with 16 icons, or you can purchase the entire set with 146 icons for only $12!</p>
+                                <ul class="list-inline item-details">
+                                    <li>
+                                        Client:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">Start Bootstrap</a>
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        Date:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">April 2014</a>
+                                        </strong>
+                                    </li>
+                                    <li>
+                                        Service:
+                                        <strong>
+                                            <a href="http://startbootstrap.com">Web Development</a>
+                                        </strong>
+                                    </li>
+                                </ul>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- jQuery -->
+        <script src="/Bootstrap/js/jquery.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="/Bootstrap/js/bootstrap.min.js"></script>
+        <!-- Plugin JavaScript -->
+        @*<script src="/Bootstrap/css/jquery.easing.min.js"></script>
+            <script src="/Bootstrap/js/classie.js"></script>
+            <script src="/Bootstrap/js/cbpAnimatedHeader.js"></script>
+            <!-- Contact Form JavaScript -->
+            <script src="/Bootstrap/js/jqBootstrapValidation.js"></script>
+            <script src="/Bootstrap/js/contact_me.js"></script>
+            <!-- Custom Theme JavaScript -->
+            <script src="/Bootstrap/js/freelancer.js"></script>
+            <script src="/Script/boo"></script>*@
+        
+    </body>
+</html>

@@ -1,0 +1,93 @@
+﻿@model EADprojectBitf12m029.Models.Post
+
+@{
+    ViewBag.Title = "UploadImg";
+    Layout = "~/Views/Shared/UserShared.cshtml";
+}
+
+@using EADprojectBitf12m029.Models
+
+@{
+    ViewBag.Title = "UploadImg";
+}
+
+<div id="div1" class="container" style="margin-left: 20%; margin-top: 10%">
+
+    <div class="title_box" style="margin-top: 4%;background-color: blue ; font-size: x-large">@{ LogIn u = (LogIn)Session["user"]; }@u.UserName</div>
+    <div class="border_box" style="background-color: black">
+
+        <div class="product_title">
+            <textarea style="width: 500px">@Model.Text</textarea>
+        </div>
+
+        @if (Model.Type.Equals("image"))
+        {
+            <div class="product_img">
+                <img class="img-responsive" src=@Model.Path alt="Image" border="0" style="margin-left: 5.5%; width: 500px; height: 350px" />
+            </div>
+           
+        }
+        @if (Model.Type.Equals("video"))
+        {
+
+            <div class="product_img">
+                <video controls>
+                    <source src="@Model.Path" type="video/mp4">
+                    <source src="@Model.Path" type="video/ogg">
+
+                </video>
+            </div>
+        }
+        @if (Model.Type.Equals("audio"))
+        {
+            <div class="product_img">
+                <video controls>
+                    <source src="@Model.Path" type="video/mp4">
+                    <source src="@Model.Path" type="video/ogg">
+
+                </video>
+            </div>
+        }
+
+        @foreach (var c in ViewBag.Comment)
+        {
+            
+            <div class="product_img" style="color: white ; background-color: black">
+                @if (c.UserName != null)
+                {
+                    <p style="margin-left: 2.5%; width: 50px; color: blanchedalmond">@c.UserName</p>
+                }
+                <p style="margin-left:0; width: 500px;color: white; margin-top:-6%">@c.Text</p>
+                <hr style="font-weight: bolder"/>
+            </div>
+        }
+        <div id="myDiv" class="product_img" style="color: white ; background-color: black">
+                        @using (Html.BeginForm("AddComment", "Home", FormMethod.Post))
+                        {
+
+                            LogIn l = new LogIn();
+                            l = (LogIn)Session["user"];
+
+                           @l.UserName<textarea name = "cat" style="margin-left: 3.5%; width: 350px;color: black"></textarea>
+      
+            <input value=@Model.PostId name="id" type="hidden"/>
+            <input type="submit" value="Ok" class="btn btn-info btn-navbar" style="margin-left: 86%; margin-top: -15%" />
+                Html.EndForm();
+            }
+            <hr style="font-weight: bolder" />
+        </div>
+    </div>
+
+
+</div>
+<script>
+    function Lod(){
+
+
+        $('#text1').change(function() {
+            var value = $('#text1').val();
+            var value2 = $('#id').val();
+            $('#d1').load('/Home/AddComment?cat=' + value + 'id' + id);
+        });
+    }
+</script>

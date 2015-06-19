@@ -1,0 +1,37 @@
+﻿
+@using EADprojectBitf12m029.Models;
+@model List<Post>
+
+<div style="width: 100%; height: auto; background-image: url('/Bootstrap/Images/bg1.jpg')">
+   @foreach(Post p in Model)
+   {
+       <div style="width: 70%; margin-left: 10%; margin-top: 5%;">
+        
+           <textarea style="width: 100%; height: 20%" >@p.Text</textarea>
+           <table>
+               <div style="width: 100%; height: 80% ; margin-top: 20%">
+                  
+                   @if (p.Type.Equals("Image"))
+                   {
+                       <tr>
+                           <td> <img src="@p.Path" height="350" width="350" /></td>
+                       </tr>
+                   }
+                   @if (p.Type.Equals("video"))
+                   {
+                       <tr>
+                           <td> <img src="@p.Path" height="350" width="350" /></td>
+                       </tr>
+                   }
+                   @if (p.Type.Equals("audio"))
+                   {
+                       <tr>
+                           <td> <img src="@p.Path" height="350" width="350" /></td>
+                       </tr>
+                   }
+               </div>
+           </table>
+          
+       </div>
+   }
+</div>

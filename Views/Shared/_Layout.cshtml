@@ -1,0 +1,93 @@
+﻿@using EADprojectBitf12m029.Models
+<html>
+<head>
+    <title>@ViewBag.Title</title>
+
+    <link rel="stylesheet" href="~/Content/bootstrap.css" type="text/css">
+    <link href="/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/bootstrap-theme.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/bootstrap-responsive.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="/Script/jquery-2.1.4.min.js"></script>
+    <script src="/Script/jquery.min.js"></script>
+    <script src="/Script/bootstrap.min.js"></script>
+    <link href="/Content/jquerysctipttop.css" rel="stylesheet" type="text/css">
+</head>
+
+    <body style="background-image: url('/Bootstrap/Images/bg1.jpg');">
+        
+                
+            <nav class="navbar navbar-inverse navbar-fixed-top " style=" ">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#" style="font-family: serif ; font-weight:bold;font-size: xx-large;color:white"><img style="width:100px; height: 100px" class="img-circle"src="/Bootstrap/Images/logo.png"/></a>
+
+                    </div>
+                    <div style="margin-left: 65%">
+                        <a class="navbar-brand" href="~/Home/Index" style="font-family:  serif ; font-weight:bold;color:white;font-size: large">Home</a>
+                    </div>
+                    <div style="margin-left: 73%">
+                        <a class="navbar-brand" href="~/Home/About" style="font-family: serif ;  font-weight:bold;color:white;font-size: large">AboutUs</a>
+                    </div>
+                    @if (Session["user"] == null)
+                    {
+                        <ul class="nav nav-pills" style="margin-left: 80%">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" href="#" data-toggle="dropdown" style="font-size:large;color:white; font-family: serif" >Sign In <strong class=" caret"></strong></a>
+                                <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px; opacity: 0.8">
+                                    <!-- Login form here -->
+                                    <form action="@Url.Action("LogIn", "Home")" method="POST" role="form">
+                                        <input id="user_username" style="margin-bottom: 15px;" type="text" name="UserName" size="30%" />
+                                        <input id="user_password" style="margin-bottom: 15px;" type="password" name="Password" size="30%" />
+                                
+
+                                        <input id="user_remember_me" style="float: left; margin-right: 10px;" type="checkbox" name="user[remember_me]" value="1" />
+
+                                        <label class="string optional" for="user_remember_me"> Remember me</label>
+
+                                        <input class="btn btn-primary" style="clear: left; width: 100%; height: 32px; font-size: 13px;" type="submit" name="commit" value="Sign In" />
+                                    </form>
+                                </div>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <ul class="nav nav-pills" style="margin-left: 80%">
+                            <li class="dropdown">
+                                <a class="dropdown-toggle" href="#" style="font-size:large;color:white; font-family: serif" data-toggle=" dropdown">@{LogIn u = (LogIn)Session["user"];}@u.UserName <strong class="caret"></strong></a>
+                                <div class="dropdown-menu" style="padding: 15px; padding-bottom: 0px; opacity: 0.8">
+                                    <!-- Login form here -->
+                                    <ul ><li ><a href="@Url.Action("Logout","Home")">LogOut</a></li></ul>
+                                </div>
+                        
+                            </li>
+                    
+                        </ul>
+                
+                
+                
+            
+                    }
+                </div>
+            </nav>
+        <div class="container">@RenderBody();</div>
+       
+    
+        <script>
+            $(function () {
+                // Setup drop down menu
+                $('.dropdown-toggle').dropdown();
+
+                // Fix input element click problem
+                $('.dropdown input, .dropdown label').click(function (e) {
+                    e.stopPropagation();
+                });
+            });
+        </script>
+        <script src="~/Script/jquery-2.1.4.min.js"></script>
+        <script src="~/Script/bootstrap.min.js"></script>
+        <script src="~/Script/npm.js"></script>
+    </body>
+</html>

@@ -1,0 +1,61 @@
+﻿@{
+    Layout = "~/Views/Shared/Admin_Layout.cshtml";
+}
+
+
+
+@using EADprojectBitf12m029.Models;
+@model List<Post>
+
+
+<div class="container" style="margin-left: 20%; margin-top: 20%">
+    @foreach (var p in Model)
+    {
+        <div class="title_box" style="margin-top: 4%;background-color: darkblue ; font-size: x-large">@p.UserName</div>
+        <div class="border_box" style="background-color: black">
+            <div class="product_title">
+                <p style="width: 500px ; background-color:white ">@p.Text</p>
+            </div>
+            @if (p.Type.Equals("image"))
+            {
+                <div class="product_img">
+                    <img class="img-responsive" src=@p.Path alt="Image" border="0" style=" margin-left:5.5%; width: 500px; height: 350px" />
+                </div>
+            }
+            @if (p.Type.Equals("video"))
+            {
+
+                <div class="product_img">
+                    <video controls>
+                        <source src="@p.Path" type="video/mp4">
+                        <source src="@p.Path" type="video/ogg">
+
+                    </video>
+                </div>
+            }
+            @if (p.Type.Equals("audio"))
+            {
+                <div class="product_img">
+                    <video controls>
+                        <source src="@p.Path" type="video/mp4">
+                        <source src="@p.Path" type="video/ogg">
+
+                    </video>
+                </div>
+            }
+            <form action="~/Admin/UploadImg?id=@p.PostId" method="POST">
+
+                <div class="prod_price" style="margin-left: -50%"><input class="btn btn-info btn-navbar" type="submit" value="Comment" /></div>
+            </form>
+            <form action="~/Admin/LikePost?id=@p.PostId" method="POST">
+
+                <div class="prod_price" style="margin-left: 10% ; margin-top: -9.5%"><input class="btn btn-info btn-navbar" type="submit" value="Like" /></div>
+            </form>
+            <form action="~/Admin/DelPost?id=@p.PostId" method="POST">
+
+                <div class="prod_price" style="margin-left: 57% ; margin-top: -9.5%"><input class="btn btn-info btn-navbar" type="submit" value="Delete Post" /></div>
+            </form>
+        </div>
+    }
+
+</div>
